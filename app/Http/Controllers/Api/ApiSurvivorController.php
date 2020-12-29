@@ -12,14 +12,29 @@ use App\Models\Resource;
 class ApiSurvivorController extends Controller
 {
 
+    /**
+     * List of survivor - get all registers
+     * @param void
+     * @return Objects
+     */
     public function index() {
         return SurvivorResource::collection(Survivor::all());
     }
 
+    /**
+     * Register of survivor
+     * @param id
+     * @return Object
+     */
     public function show($id) {
         return new SurvivorResource(Survivor::findOrFail($id));
     }
 
+    /**
+     * Get token to send request
+     * @param Request
+     * @return string
+     */
     public function token(Request $request) {
 
         $token = $request->session()->token();
@@ -29,6 +44,11 @@ class ApiSurvivorController extends Controller
         return $token;
     }
 
+    /**
+     * Create register survivor
+     * @param Request
+     * @return Survivor
+     */
     public function store(Request $request) {
         $survivor = new Survivor;
         $survivor->name = $request->name;
@@ -56,12 +76,23 @@ class ApiSurvivorController extends Controller
         return response()->json($survivor, 201);
     }
 
+    /**
+     * Update register survivor by id
+     * @param Request
+     * @param id
+     * @return Survivor
+     */
     public function update(Request $request, $id) {
         $survivor = Survivor::find($id)->update($request->all());
 
         return response()->json($survivor, 200);
     }
 
+    /**
+     * Destroy register survivor
+     * @param id
+     * @return null
+     */
     public function destroy($id) {
         $survivor = Survivor::findOrFail($id);
         Resource::where('survivor_id', $survivor->id)->delete();
@@ -70,6 +101,11 @@ class ApiSurvivorController extends Controller
         return response()->json(null, 204);
     }
 
+    /**
+     * Mark survivor with infected
+     * @param id
+     * @return Survivor
+     */
     public function mark_infected($id) {
         $survivor = Survivor::findOrFail($id);
 
@@ -122,6 +158,10 @@ class ApiSurvivorController extends Controller
         return $result;
     }
 
+    /**
+     * Report count - avg
+     * @return Array 
+     */
     public function report() {
         $total = Survivor::all()->count();
         $total_infected_survivors = $this->count_infected_survivors();

@@ -26,6 +26,10 @@ class SurvivorController extends Controller {
         ]);   
     }
 
+    public function report() {
+        return view('survivors.report');
+    }
+
     public function show($id) {
         return view('survivors.show', [
             'survivor' => Survivor::findOrFail($id)
