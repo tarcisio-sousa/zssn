@@ -12,7 +12,7 @@
                 <div class="text-center">
                     {{ $survivor->name }}
                     <span>, {{ $survivor->age }}</span>
-                    @if(!$survivor->infected)
+                    @if($survivor->infected == 3)
                     <span><ion-icon name="skull"></ion-icon></span>
                     @endif
                     <div>

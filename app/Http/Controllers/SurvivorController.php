@@ -116,6 +116,11 @@ class SurvivorController extends Controller {
     }
 
     public function do_trade(Request $request) {
+        
+        if ($request->total_survivor != $request->total_survivor_trade) {
+            return redirect("/survivors/trade/{$request->survivor}")->with('msg', 'Pontuação não é suficiente para negociação!!!');
+        }
+
         foreach($request->resource_survivor as $id => $quantity) {
             $survivorResource = Resource::where('survivor_id', $request->survivor)->where('inventorie_id', $id)->first();
             $survivorResource->quantity = $survivorResource->quantity - $quantity;
@@ -151,7 +156,7 @@ class SurvivorController extends Controller {
                 $survivorResource->update();
             }
         }
-        return redirect('/')->with('msg', 'Negociação de recursos realizada com sucesso!!!');
+        return redirect("/survivors/trade/{$request->survivor}")->with('msg', 'Negociação de recursos realizada com sucesso!!!');
     }
 
 }

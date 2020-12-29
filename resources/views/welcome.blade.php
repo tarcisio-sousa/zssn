@@ -19,7 +19,7 @@
                 <div class="text-center">
                     <a href="/survivors/{{ $survivor->id }}">{{ $survivor->name }}</a>
                     <span>, {{ $survivor->age }}</span>
-                    @if($survivor->infected)
+                    @if($survivor->infected == 3)
                     <span><ion-icon name="skull"></ion-icon></span>
                     @endif
                     <div>
