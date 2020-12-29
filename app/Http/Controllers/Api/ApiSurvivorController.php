@@ -83,6 +83,61 @@ class ApiSurvivorController extends Controller
         return $survivor;
     }
 
+    public function count_infected_survivors() {
+        return Survivor::where('infected', 3)->get()->count();
+    }
+
+    public function count_non_infected_survivors() {
+        return Survivor::where('infected', '<', 3)->get()->count();
+    }
+
+    public function average_resources_survivors() {
+        $resources = Resource::all();
+
+        $inventories = Inventory::all();
+
+        $nameInventory = array();
+
+        foreach($inventories as $inventory) {
+            $nameInventory[$inventory->id] = $inventory->item;
+        }
+
+        foreach($resources as $resource) {
+
+            if (!isset($result[$resource->inventorie_id]['total'])) {
+                $result[$resource->inventorie_id]['count'] = 0;
+                $result[$resource->inventorie_id]['total'] = 0;
+                $result[$resource->inventorie_id]['average'] = 0;
+                $result[$resource->inventorie_id]['item'] = $nameInventory[$resource->inventorie_id];
+            }
+
+            $result[$resource->inventorie_id]['total'] += $resource->quantity;
+            $result[$resource->inventorie_id]['count']++;
+        }
+
+        foreach($result as $i => &$r) {
+            $r['average'] = round(($r['total'] / $r['count']), 2);
+        }
+
+        return $result;
+    }
+
+    public function report() {
+        $total = Survivor::all()->count();
+        $total_infected_survivors = $this->count_infected_survivors();
+        $total_non_infected_survivors = $this->count_non_infected_survivors();
+        $average_resources_survivors = $this->average_resources_survivors();
+
+        $percentage_infected_survivors = round((($total_infected_survivors * 100) / $total), 2);
+        $percentage_non_infected_survivors = round((($total_non_infected_survivors * 100) / $total), 2);
+
+        return response()->json([
+            'percentage_infected_survivors' => $percentage_infected_survivors,
+            'percentage_non_infected_survivors' => $percentage_non_infected_survivors,
+            'average_resources_survivors' => $average_resources_survivors
+        ]);
+    }
+
     public function trader($id) {
         $survivor = Survivor::findOrFail($id);
 

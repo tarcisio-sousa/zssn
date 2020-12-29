@@ -40,3 +40,4 @@ Route::put('/api/survivor/{id}', [ApiSurvivorController::class, 'update']);
 Route::delete('/api/survivor/{id}', [ApiSurvivorController::class, 'destroy']);
 Route::get('/api/survivor/mark/{id}', [ApiSurvivorController::class, 'mark_infected']);
 Route::get('/api/survivor/trader/{id}', [ApiSurvivorController::class, 'trader']);
+Route::get('/api/survivors/report', [ApiSurvivorController::class, 'report']);
