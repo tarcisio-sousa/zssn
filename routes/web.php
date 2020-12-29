@@ -31,6 +31,7 @@ Route::get('/survivors/edit/location/{id}', [SurvivorController::class, 'edit_lo
 Route::get('/survivors/mark/{id}', [SurvivorController::class, 'mark_infected']);
 Route::get('/survivors/trade/{id}', [SurvivorController::class, 'trade']);
 Route::post('/survivors/trade', [SurvivorController::class, 'do_trade']);
+Route::get('/report', [SurvivorController::class, 'report']);
 
 Route::get('/api/survivors', [ApiSurvivorController::class, 'index']);
 Route::post('/api/survivor', [ApiSurvivorController::class, 'store']);

@@ -35,6 +35,9 @@
                         <li class="nav-item active">
                             <a class="nav-link" aria-current="page" href="/">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="report" href="/report">Relatório</a>
+                        </li>
                         <!--
                         <li class="nav-item">
                             <a class="nav-link" href="/survivors/create">Soreviventes</a>
