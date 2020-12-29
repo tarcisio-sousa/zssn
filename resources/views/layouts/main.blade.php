@@ -38,11 +38,6 @@
                         <li class="nav-item">
                             <a class="nav-link" aria-current="report" href="/report">Relatório</a>
                         </li>
-                        <!--
-                        <li class="nav-item">
-                            <a class="nav-link" href="/survivors/create">Soreviventes</a>
-                        </li>
-                        -->
                     </ul>
                     <form action="/" method="GET" class="d-flex">
                         <input name="search" class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
@@ -62,7 +57,7 @@
         </main>
         <footer class="footer mt-auto py-3 bg-light">
             <div class="container">
-                <span>Zombie Network &copy; 2020</span>
+                <span>Zombie Survival Social Network &copy; 2020</span>
             </div>
         </footer>
         <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>

@@ -23,23 +23,34 @@ async function getData(url = '') {
     return response.json()
 }
 
+function removeSurvivorTrader() {
+    let card_survivor_to_trade = document.getElementById('card_survivor_to_trade')
+    let list_survivor_to_trade = document.getElementById('list_survivor_to_trade')
+    card_survivor_to_trade.innerHTML = list_survivor_to_trade.innerHTML = ""
+    document.getElementById('select_survivor_to').classList.remove('d-none')
+    document.getElementById('select_survivor_to').value = ""
+}
+
 function selectSurvivorTo(elem) 
 {
     let card_survivor_to_trade = document.getElementById('card_survivor_to_trade')
     let list_survivor_to_trade = document.getElementById('list_survivor_to_trade')
     
     if (!elem.value) {
-        card_survivor_to_trade.innerHTML = list_survivor_to_trade.innerHTML = "";
+        card_survivor_to_trade.innerHTML = list_survivor_to_trade.innerHTML = ""
         return
     }
     
-    elem.classList.add('d-none');
+    elem.classList.add('d-none')
 
     getData(`/api/survivor/trader/${elem.value}`)
         .then(response => {
             let survivor_to_trade = response.data
             card_survivor_to_trade.innerHTML = `
                 <div class="card">
+                    <div style="position: absolute;">
+                        <button type="button" class="btn-close" onclick="removeSurvivorTrader()"></button>
+                    </div>
                     <div class="card-body">
                         <div class="text-center">
                             <a href="/survivors/${survivor_to_trade.id}">${survivor_to_trade.name}</a>
@@ -71,7 +82,7 @@ function selectSurvivorTo(elem)
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-md-9">TOTAL</div>
-                        <div class="col-md-3"><input type="text" name="total_survivor" value="0" id="total-survivor-trade" class="form-control disabled" /></div>
+                        <div class="col-md-3"><input type="text" name="total_survivor_trade" value="0" id="total-survivor-trade" class="form-control disabled" /></div>
                     </div>
                 </li>`
             
@@ -86,7 +97,8 @@ function selectSurvivorTo(elem)
 function verifyTotalResources() {
     if (!document.getElementById('total-survivor-trade')) return
 
-    if (document.getElementById('total-survivor').value == document.getElementById('total-survivor-trade').value) {
+    if (document.getElementById('total-survivor').value == document.getElementById('total-survivor-trade').value 
+        && document.getElementById('total-survivor').value != 0) {
         document.getElementById('btn-submit-trade').classList.remove('d-none');
     } else {
         document.getElementById('btn-submit-trade').classList.add('d-none');
@@ -132,7 +144,7 @@ function calculateTotal(elem, itemsSurvivor, totalSurvivor, quantityItem) {
 
 <div class="row">
     <div class="col-md-12">
-        <select name="survivor_to" class="form-select" onchange="selectSurvivorTo(this)">
+        <select name="survivor_to" id="select_survivor_to" class="form-select" onchange="selectSurvivorTo(this)">
             <option value="">Selecione um sobrevivente</option>
 
             @foreach($survivors_to as $survivor_to)
@@ -201,7 +213,7 @@ function calculateTotal(elem, itemsSurvivor, totalSurvivor, quantityItem) {
 
     <div class="row mt-3">
         <div class="d-grid gap-2 col-2 mx-auto">
-            <button type="submit" id="btn-submit-trade" class="btn btn-outline-success d-none"><ion-icon class="icon-repeat-outline-md" name="repeat-outline" style="font-size: 30px;"></ion-icon></button>
+            <button type="submit" id="btn-submit-trade" class="btn btn-outline-success d-none"><ion-icon name="repeat-outline" style="font-size: 30px;"></ion-icon></button>
         </div>
     </div>
 </form>
