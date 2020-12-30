@@ -41,11 +41,26 @@ getData(`/api/survivors/report`)
         })
         document.getElementById('average_resources_survivors').innerHTML = cards
 
+        cards = `<h2>Pontos perdidos por sobreviventes infectados</h2>`;
+        Object.keys(response.points_lost_infected_survivors).forEach(key => {
+            cards += `
+                <div class="col-md-3 mt-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">${response.points_lost_infected_survivors[key].resource.item}</div>
+                            <div class="text-center">${response.points_lost_infected_survivors[key].total}</div>
+                        </div>
+                    </div>
+                </div>`
+        })
+
+        document.getElementById('points_lost_infected_survivors').innerHTML = cards
+
     })
 
 </script>
 
-<h1>Relatório! </h1>
+<h1>Relatório de sobrevivência! </h1>
 <div class="row">
     <div class="col-md-3">
         <div class="card">
@@ -68,6 +83,11 @@ getData(`/api/survivors/report`)
 <hr>
 
 <div class="row" id="average_resources_survivors">
+</div>
+
+<hr>
+
+<div class="row" id="points_lost_infected_survivors">
 </div>
 
 @endsection
