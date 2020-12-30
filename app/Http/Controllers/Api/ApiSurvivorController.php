@@ -158,6 +158,37 @@ class ApiSurvivorController extends Controller
         return $result;
     }
 
+    public function points_lost_infected_survivor() {
+        $survivors_infected = Survivor::where('infected', 3)->get('id');
+        $arraySurvivorsId = array();
+
+        foreach($survivors_infected as $survivor) {
+            $arraySurvivorsId[] = $survivor->id;
+        }
+
+        $inventories = Inventory::all(['id', 'item', 'points']);
+        
+        $objInventory = array();
+        foreach($inventories as $inventory) {
+            $objInventory[$inventory->id] = $inventory;
+        }
+
+        $resources = Resource::whereIn('survivor_id', $arraySurvivorsId)->get(['id', 'survivor_id', 'inventorie_id', 'quantity']);
+
+        $result = array();
+        foreach($resources as $resource) {
+            if (!isset($result[$resource->inventorie_id])) {
+                $result[$resource->inventorie_id]['resource'] = $objInventory[$resource->inventorie_id];
+                $result[$resource->inventorie_id]['quantity'] = 0;
+                $result[$resource->inventorie_id]['total'] = 0;
+            }
+            $result[$resource->inventorie_id]['quantity'] += $resource->quantity;
+            $result[$resource->inventorie_id]['total'] += $resource->quantity * $result[$resource->inventorie_id]['resource']->points;
+        }
+
+        return $result;
+    }
+
     /**
      * Report count - avg
      * @return Array 
@@ -167,6 +198,7 @@ class ApiSurvivorController extends Controller
         $total_infected_survivors = $this->count_infected_survivors();
         $total_non_infected_survivors = $this->count_non_infected_survivors();
         $average_resources_survivors = $this->average_resources_survivors();
+        $points_lost_infected_survivors = $this->points_lost_infected_survivor();
 
         $percentage_infected_survivors = round((($total_infected_survivors * 100) / $total), 2);
         $percentage_non_infected_survivors = round((($total_non_infected_survivors * 100) / $total), 2);
@@ -174,7 +206,8 @@ class ApiSurvivorController extends Controller
         return response()->json([
             'percentage_infected_survivors' => $percentage_infected_survivors,
             'percentage_non_infected_survivors' => $percentage_non_infected_survivors,
-            'average_resources_survivors' => $average_resources_survivors
+            'average_resources_survivors' => $average_resources_survivors,
+            'points_lost_infected_survivors' => $points_lost_infected_survivors
         ]);
     }
 
